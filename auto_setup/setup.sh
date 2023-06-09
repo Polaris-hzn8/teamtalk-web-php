@@ -1,7 +1,5 @@
 #!/bin/bash
 # this is a setup scripts for web
-# author: luoning
-# date: 09/04/2014
 
 # setup web
 PHP_WEB=tt
@@ -24,7 +22,6 @@ check_user() {
         exit 1
     fi
 }
-
 
 build_web(){
     if [ -d $PHP_WEB ]; then
