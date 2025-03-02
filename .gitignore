@@ -34,10 +34,9 @@
 
 # specific items
 
-# 1.auto_setup
-# im_web
-/auto_setup/tt/
-/auto_setup/tt.zip
+# 1.auto
+/auto/tt/
+/auto/tt.zip
 
 # 2.Folders
 tt/*
