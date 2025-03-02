@@ -48,7 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '192.168.172.133';
+$db['default']['hostname'] = '106.75.230.157';
 $db['default']['username'] = 'root';
 $db['default']['password'] = '20001201';
 $db['default']['database'] = 'teamtalk';

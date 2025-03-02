@@ -1,7 +1,6 @@
 #!/bin/bash
 # this is a setup scripts for web
 
-# setup web
 PHP_WEB=im-server-web
 PHP_WEB_SETUP_PATH=/var/www/html        # web代码路径
 PHP_NGINX_CONF_PATH=/usr/local/nginx/conf/conf.d
@@ -24,6 +23,15 @@ check_user() {
     fi
 }
 
+pack_web() {
+    cd ../
+    rm -rf $PHP_WEB
+    rm -rf $PHP_WEB.zip
+    cp -ar src $PHP_WEB
+    zip -r $PHP_WEB.zip $PHP_WEB
+    rm -rf $PHP_WEB
+}
+
 build_web(){
     # 解压源码包
     # if [ -d $PHP_WEB ]; then
@@ -38,10 +46,13 @@ build_web(){
     #     fi
     # fi
 
+    # 历史部署移除
+    rm -rf $PHP_WEB_SETUP_PATH/$PHP_WEB/
+
     # 源码部署 Nginx-Web目录
     set -x
     mkdir -p $PHP_WEB_SETUP_PATH
-    cp -r ./* $PHP_WEB_SETUP_PATH
+    cp -r ../$PHP_WEB/ $PHP_WEB_SETUP_PATH
     cp ./tools/$PHP_DB_CONF $PHP_DB_CONF_PATH/
     cp ./tools/$PHP_MSFS_CONF $PHP_DB_CONF_PATH/
     set +x
@@ -55,8 +66,9 @@ build_web(){
     # Nginx相关配置
     set -x
     cp ./tools/$PHP_NGINX_CONF $PHP_NGINX_CONF_PATH/
-    chmod -R 777 $PHP_WEB_SETUP_PATH/$PHP_WEB/
     set +x
+
+    chmod -R 777 $PHP_WEB_SETUP_PATH/$PHP_WEB/
 
     systemctl stop nginx.service 
     systemctl start nginx.service 
@@ -80,8 +92,9 @@ case $1 in
         build_web
         ;;
     pack)
-        cd ../
-        zip -r $PHP_WEB.zip src
+        print_hello $1
+        check_user
+        pack_web
         ;;
     *)
     print_help

@@ -31,14 +31,9 @@
 *.out
 *.app
 
+# pack
+im-server-*/
+im-server-*.zip
 
-# specific items
-
-# 1.auto
-/auto/tt/
-/auto/tt.zip
-
-# 2.Folders
-tt/*
-tt.zip
-php/download/*
+# folders
+src/download/*
