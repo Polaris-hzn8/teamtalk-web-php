@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TT开源php管理后台</title>
+        <title>teamtalk管理后台</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="/ui/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="/ui/css/main.css" rel="stylesheet" type="text/css" />

@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TT开源php管理后台 | 登陆</title>
+        <title>teamtalk管理后台 | 登陆</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <script src="/ui/js/jquery-1.11.1.min.js"></script>
         <link href="/ui/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
