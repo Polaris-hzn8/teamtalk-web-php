@@ -1,16 +1,20 @@
 #!/bin/bash
 # this is a setup scripts for web
 
-PHP_WEB=im-server-web
-PHP_WEB_SETUP_PATH=/var/www/html        # web代码路径
-PHP_NGINX_CONF_PATH=/usr/local/nginx/conf/conf.d
-PHP_DB_CONF_PATH=$PHP_WEB_SETUP_PATH/$PHP_WEB/application/config
+PROJECT_PATH=..
+SOURCE_PATH=.
+SOURCE_CONF=$SOURCE_PATH/cconf
 
-PHP_DB_CONF=database.php
-PHP_MSFS_CONF=config.php
-PHP_NGINX_CONF=im.com.conf
+PROJECT_NAME=im-server-web              # 项目名称
+PROJECT_SETUP_PATH=/var/www/html        # web代码路径
+NGINX_CONF_PATH=/usr/local/nginx/conf/conf.d                                # nginx配置路径
+DATABASE_CONF_PATH=$PROJECT_SETUP_PATH/$PROJECT_NAME/application/config # 数据库配置路径
 
-print_hello(){
+FILE_NGINX_CONF=im.com.conf
+FILE_MYSQL_CONF=database.php
+FILE_MSFS_CONF=config.php
+
+print_hello() {
     echo "==========================================="
     echo "$1 im web for TeamTalk"
     echo "==========================================="
@@ -24,55 +28,46 @@ check_user() {
 }
 
 pack_web() {
-    cd ../
-    rm -rf $PHP_WEB
-    rm -rf $PHP_WEB.zip
-    cp -ar src $PHP_WEB
-    zip -r $PHP_WEB.zip $PHP_WEB
-    rm -rf $PHP_WEB
+    echo "[INFO] Packing project..."
+    cd $PROJECT_PATH
+    rm -rf $PROJECT_NAME $PROJECT_NAME.zip
+    cp -ar src $PROJECT_NAME
+    zip -r $PROJECT_NAME.zip $PROJECT_NAME
+    rm -rf $PROJECT_NAME
+    echo "[INFO] Pack finished: $PROJECT_NAME.zip"
 }
 
-build_web(){
-    # 解压源码包
-    # if [ -d $PHP_WEB ]; then
-    #     echo "$PHP_WEB has existed."
-    # else
-    #     unzip $PHP_WEB.zip
-    #     if [ $? -eq 0 ]; then
-    #         echo "unzip $PHP_WEB successed."
-    #     else
-    #         echo "Error: unzip $PHP_WEB failed."
-    #         return 1
-    #     fi
-    # fi
+build_web() {
+    echo "[INFO] Starting deployment..."
 
     # 历史部署移除
-    rm -rf $PHP_WEB_SETUP_PATH/$PHP_WEB/
+    echo "[INFO] Removing old deployment..."
+    rm -rf $PROJECT_SETUP_PATH/$PROJECT_NAME/
 
-    # 源码部署 Nginx-Web目录
-    set -x
-    mkdir -p $PHP_WEB_SETUP_PATH
-    cp -r ../$PHP_WEB/ $PHP_WEB_SETUP_PATH
-    cp ./tools/$PHP_DB_CONF $PHP_DB_CONF_PATH/
-    cp ./tools/$PHP_MSFS_CONF $PHP_DB_CONF_PATH/
-    set +x
+    # 源代码部署
+    echo "[INFO] Copying php project files..."
+    sudo mkdir -p $PROJECT_SETUP_PATH/$PROJECT_NAME/
+    cp -r ./* "$PROJECT_SETUP_PATH/$PROJECT_NAME/"
 
-    # 移除 default.conf
-    if [ -f $PHP_NGINX_CONF_PATH/default.conf ]; then
-        rm $PHP_NGINX_CONF_PATH/default.conf
-        echo "remove $PHP_NGINX_CONF_PATH/default.conf successed."
-    fi
+    # 更新系统配置
+    echo "[INFO] Copying config files..."
+    cp $SOURCE_CONF/$FILE_MYSQL_CONF $DATABASE_CONF_PATH/
+    cp $SOURCE_CONF/$FILE_MSFS_CONF $DATABASE_CONF_PATH/
 
     # Nginx相关配置
-    set -x
-    cp ./tools/$PHP_NGINX_CONF $PHP_NGINX_CONF_PATH/
-    set +x
+    echo "[INFO] Updating nginx config..."
+    rm -f $NGINX_CONF_PATH/default.conf
+    cp $SOURCE_CONF/$FILE_NGINX_CONF $NGINX_CONF_PATH/
 
-    chmod -R 777 $PHP_WEB_SETUP_PATH/$PHP_WEB/
+    echo "[INFO] Setting permissions..."
+    chmod -R 777 $PROJECT_SETUP_PATH/$PROJECT_NAME/
 
-    systemctl stop nginx.service 
-    systemctl start nginx.service 
-    return 0
+    echo "[INFO] Reloading nginx..."
+    systemctl reload nginx.service || systemctl restart nginx.service
+    # systemctl stop nginx.service 
+    # systemctl start nginx.service
+
+    echo "[INFO] Deployment finished successfully." 
 }
 
 print_help() {
@@ -82,10 +77,6 @@ print_help() {
 }
 
 case $1 in
-    check)
-        print_hello $1
-        check_user
-        ;;
     install)
         print_hello $1
         check_user
