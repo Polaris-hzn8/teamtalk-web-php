@@ -48,21 +48,40 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '106.75.230.157';
-$db['default']['username'] = 'root';
-$db['default']['password'] = '20001201';
-$db['default']['database'] = 'teamtalk';
-$db['default']['dbdriver'] = 'mysqli';
-$db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-$db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
+$db['default'] = array(
+	'hostname' => getenv('DB_HOST') ?: '127.0.0.1',
+	'username' => getenv('DB_USER') ?: 'root',
+	'hostname' => getenv('DB_PASS') ?: '20001201',
+	'hostname' => getenv('DB_NAME') ?: 'teamtalk',
+
+	'hostname' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'autoinit' => TRUE,
+	'stricton' => FALSE,
+);
+
+// $db['default']['hostname'] = '127.0.0.1';
+// $db['default']['username'] = 'root';
+// $db['default']['password'] = '20001201';
+// $db['default']['database'] = 'teamtalk';
+// $db['default']['dbdriver'] = 'mysqli';
+// $db['default']['dbprefix'] = '';
+// $db['default']['pconnect'] = TRUE;
+// $db['default']['db_debug'] = TRUE;
+// $db['default']['cache_on'] = FALSE;
+// $db['default']['cachedir'] = '';
+// $db['default']['char_set'] = 'utf8';
+// $db['default']['dbcollat'] = 'utf8_general_ci';
+// $db['default']['swap_pre'] = '';
+// $db['default']['autoinit'] = TRUE;
+// $db['default']['stricton'] = FALSE;
 
 
 /* End of file database.php */

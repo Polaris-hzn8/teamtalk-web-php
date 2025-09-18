@@ -1,9 +1,10 @@
 #!/bin/bash
 # this is a setup scripts for web
 
-PROJECT_PATH=..
 SOURCE_PATH=.
-SOURCE_CONF=$SOURCE_PATH/cconf
+PROJECT_PATH=..
+CONF_DIR_NGINX=$PROJECT_PATH/nginx
+CONF_DIR_PHP=$PROJECT_PATH/php
 
 PROJECT_NAME=im-server-web              # 项目名称
 PROJECT_SETUP_PATH=/var/www/html        # web代码路径
@@ -11,8 +12,8 @@ NGINX_CONF_PATH=/usr/local/nginx/conf/conf.d                                # ng
 DATABASE_CONF_PATH=$PROJECT_SETUP_PATH/$PROJECT_NAME/application/config # 数据库配置路径
 
 FILE_NGINX_CONF=im.com.conf
-FILE_MYSQL_CONF=database.php
-FILE_MSFS_CONF=config.php
+FILE_PHP_MYSQL_CONF=database.php
+FILE_PHP_MSFS_CONF=config.php
 
 print_hello() {
     echo "==========================================="
@@ -47,17 +48,17 @@ build_web() {
     # 源代码部署
     echo "[INFO] Copying php project files..."
     sudo mkdir -p $PROJECT_SETUP_PATH/$PROJECT_NAME/
-    cp -r ./* "$PROJECT_SETUP_PATH/$PROJECT_NAME/"
+    cp -r "$SOURCE_PATH/" "$PROJECT_SETUP_PATH/$PROJECT_NAME/"
 
     # 更新系统配置
     echo "[INFO] Copying config files..."
-    cp $SOURCE_CONF/$FILE_MYSQL_CONF $DATABASE_CONF_PATH/
-    cp $SOURCE_CONF/$FILE_MSFS_CONF $DATABASE_CONF_PATH/
+    cp $CONF_DIR_PHP/$FILE_PHP_MYSQL_CONF $DATABASE_CONF_PATH/
+    cp $CONF_DIR_PHP/$FILE_PHP_MSFS_CONF $DATABASE_CONF_PATH/
 
     # Nginx相关配置
     echo "[INFO] Updating nginx config..."
     rm -f $NGINX_CONF_PATH/default.conf
-    cp $SOURCE_CONF/$FILE_NGINX_CONF $NGINX_CONF_PATH/
+    cp $CONF_DIR_NGINX/$FILE_NGINX_CONF $NGINX_CONF_PATH/
 
     echo "[INFO] Setting permissions..."
     chmod -R 777 $PROJECT_SETUP_PATH/$PROJECT_NAME/

@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  php:
+    build: ./php
+    container_name: php-fpm
+    volumes:
+      - ./src:/var/www/html/im-server-web
+      - ./php/config.php:/var/www/html/im-server-web/application/config/config.php
+      - ./php/database.php:/var/www/html/im-server-web/application/config/database.php
+    environment:
+      DB_HOST: "106.75.230.157"
+      DB_USER: "root"
+      DB_PASS: "20001201"
+      DB_NAME: "teamtalk"
+      APP_BASE_URL: "http://localhost"
+      MSFS_URL: "http://106.75.230.157:8700/"
+      HTTP_URL: "http://106.75.230.157:8400/"
+    networks:
+      - appnet
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html/im-server-web
+      - ./nginx/im.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
