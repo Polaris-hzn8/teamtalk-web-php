@@ -1,5 +1,15 @@
 <?php
 
+// 开启输出缓冲，防止 headers already sent
+ob_start();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// 防止 REMOTE_ADDR 在 CLI 或 Docker 内报 Notice
+if (!isset($_SERVER['REMOTE_ADDR'])) {
+    $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+}
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

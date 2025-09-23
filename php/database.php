@@ -49,12 +49,13 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default'] = array(
-	'hostname' => getenv('DB_HOST') ?: '127.0.0.1',
-	'username' => getenv('DB_USER') ?: 'root',
-	'hostname' => getenv('DB_PASS') ?: '20001201',
-	'hostname' => getenv('DB_NAME') ?: 'teamtalk',
+	'dsn'       => '',
+	'hostname'  => getenv('DB_HOST') ?: '172.17.0.1',
+    'username'  => getenv('DB_USER') ?: 'root',
+    'password'  => getenv('DB_PASS') ?: '20001201',
+    'database'  => getenv('DB_NAME') ?: 'teamtalk',
 
-	'hostname' => 'mysqli',
+	'dbdriver'  => 'mysqli',  // ← 数据库类型
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
