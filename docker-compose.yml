@@ -41,3 +41,4 @@ services:
 networks:
   teamtalk-net:
     driver: bridge
+    name: teamtalk-net
