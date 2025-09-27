@@ -1,22 +1,32 @@
-# 基础镜像
 FROM php:7.4-fpm
-# 设置工作目录
+
 WORKDIR /var/www/html/im-server-web
-# 拷贝项目代码-源码部署
-COPY src /var/www/html/im-server-web
-# 拷贝配置文件
-COPY php/config.php /var/www/html/im-server-web/application/config/
-COPY php/database.php /var/www/html/im-server-web/application/config/
-# 安装系统依赖和PHP扩展
-RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
-    libpng-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd mysqli mbstring pdo pdo_mysql zip
-# 设置日志目录权限
+
+# 复制配置文件
+COPY php/config.php application/config/
+COPY php/database.php application/config/
+
+# 复制项目源码
+COPY src/ .
+
+# 安装依赖并编译 PHP 扩展
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libpng-dev \
+        libjpeg-dev \
+        libfreetype6-dev \
+        libzip-dev \
+        zlib1g-dev \
+        libwebp-dev \
+        pkg-config \
+        zip unzip \
+        git \
+        libonig-dev; \
+    docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
+    docker-php-ext-install -j"$(nproc)" gd pdo pdo_mysql mysqli mbstring zip; \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# 设置日志目录
 RUN mkdir -p application/logs && chmod -R 777 application/logs
 
+EXPOSE 9000
+CMD ["php-fpm"]
