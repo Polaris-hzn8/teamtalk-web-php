@@ -50,7 +50,7 @@ $active_record = TRUE;
 
 $db['default'] = array(
 	'dsn'       => '',
-	'hostname'  => getenv('DB_HOST') ?: '172.17.0.1',
+	'hostname'  => getenv('DB_HOST') ?: '106.75.230.157',
     'username'  => getenv('DB_USER') ?: 'root',
     'password'  => getenv('DB_PASS') ?: '20001201',
     'database'  => getenv('DB_NAME') ?: 'teamtalk',
@@ -68,7 +68,7 @@ $db['default'] = array(
 	'stricton' => FALSE,
 );
 
-// $db['default']['hostname'] = '127.0.0.1';
+// $db['default']['hostname'] = '106.75.230.157';
 // $db['default']['username'] = 'root';
 // $db['default']['password'] = '20001201';
 // $db['default']['database'] = 'teamtalk';

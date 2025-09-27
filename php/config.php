@@ -14,7 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+
+$config['base_url']	= '';                                   # 此处无需配置
 $config['msfs_url'] = 'http://106.75.230.157:8700/';
 $config['http_url'] = 'http://106.75.230.157:8400';
 
