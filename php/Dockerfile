@@ -10,7 +10,10 @@ COPY php/database.php application/config/
 COPY src/ .
 
 # 安装依赖并编译 PHP 扩展
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
         libpng-dev \
         libjpeg-dev \
         libfreetype6-dev \
